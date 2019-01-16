@@ -18,8 +18,14 @@
     <!-- Add your EJS code here -->
 <h1>
     <p>Thank you, you have logged:</p>
-    <p><%= urls %></p>
+    <p><%= shortURL %></p>
 </h1>
+      <form action="/urls/<%=shortURL%>" method="POST">
+
+      <label for="text">texthere</label>
+      <input id="longURL" type="text" name="longURL" placeholder="update url" style="width: 300px">
+      <input type="submit" value="Submit">
+      </form>
 
     <a href=#></a>
 </body>

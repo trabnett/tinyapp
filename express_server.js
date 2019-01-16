@@ -36,10 +36,14 @@ var urlDatabase = {
   "9r3204": "http://www.espn.com"
 };
 
+app.post("/urls/:id", (req,res) =>{
+urlDatabase[req.params.id] = req.body.longURL
+res.redirect("/urls/")
+
+});
 app.post("/urls/:id/delete", (req,res) =>{
   delete urlDatabase[req.params.id]
   console.log(req.params.id)
-  console.log("hello")
   res.redirect('/urls')
 });
 app.get("/urls/new", (req, res) => {
@@ -58,7 +62,7 @@ app.get("/u/:id", (req, res) => {
   }
 });
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { urls: urlDatabase[req.params.id]};
+  let templateVars = { shortURL: [req.params.id]};
   res.render("urls_show", templateVars);
 });
 app.get("/urls", (req, res) => {
