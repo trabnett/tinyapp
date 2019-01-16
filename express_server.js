@@ -5,8 +5,6 @@ app.set("view engine", "ejs");
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
-
-
 function getById (id) {
   var i = "id"
   return urlDatabase[id]
@@ -25,40 +23,40 @@ function addToDatabase(longUrl) {
   var i = generateRandomString()
   urlDatabase[i] = longUrl
   return i
-
 }
+
+function removeItem(object, item) {
+delete object.item
+}
+
 
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "9sm5xK": "http://www.google.com",
+  "9r3204": "http://www.espn.com"
 };
 
-
-
-
+app.post("/urls/:id/delete", (req,res) =>{
+  delete urlDatabase[req.params.id]
+  console.log(req.params.id)
+  console.log("hello")
+  res.redirect('/urls')
+});
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 app.post("/urls", (req, res) => {
-         // debug statement to see POST parameters
   var num = addToDatabase(req.body.longURL)
   res.redirect('/urls/' + num);
-        // Respond with 'Ok' (we will replace this)
 });
-// app.get( "/urls/:id" , function( req , res ) {
-//   console.log( "user object" , urlDatabase.getById( req.params.id ) );
-//   res.render( "profile" , {  user : usersDB.getById( req.params.id ) } );
-
-// app.get("/u/:shortURL", (req, res) => {
-//   // let longURL = ...
-//   res.redirect(longURL);
-// });
 app.get("/u/:id", (req, res) => {
   let url = urlDatabase[req.params.id]
-  res.redirect(url);
+  if (url.substring(0,7) === 'http://'){
+    res.redirect(url)
+  } else {
+    res.redirect('http://' + url)
+  }
 });
-
-
 app.get("/urls/:id", (req, res) => {
   let templateVars = { urls: urlDatabase[req.params.id]};
   res.render("urls_show", templateVars);
@@ -74,7 +72,7 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 app.get("/tim", (req,res) => {
-  res.send("<html><body>Tim <b>World</b></body></html>\n")
+  res.send("<html><body>Tim built this!</body></html>\n")
 });
 
 app.listen(PORT, () => {

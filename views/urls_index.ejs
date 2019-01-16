@@ -10,6 +10,10 @@
   <% for (item in urls) { %>
   <ul>
     <p><li><%= item %> : <%= urls[item] %></li></p>
+        <form action="/urls/<%= item %>/delete" method="POST">
+      <span for="shortURL" style="background-color: red">Delete?</span>
+      <input type="submit" value="press button">
+    </form>
   </ul>
 <% } %>
 </h1>
