@@ -79,10 +79,7 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars, );
 });
 app.get("/urls", (req, res) => {
-  console.log("this is the result:", res)
   let templateVars = { urls: urlDatabase, username: req.cookies["username"]};
-  var thing = cookieParser.JSONCookie(req.headers.cookie)
-  console.log(thing)
   res.render("urls_index", templateVars);
 });
 app.get("/hello", (req, res) => {

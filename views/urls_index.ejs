@@ -5,16 +5,16 @@
   <% include partials/_header %>
 </head>
 <body>
-    <!-- Add your EJS code here -->
-<h1>
+
+<h1 class="url">
   <% for (item in urls) { %>
   <ul>
     <p><li><%= item %> : <%= urls[item] %></li></p>
-        <a href = "/urls/<%=item%>/">"Edit?"</a>
-        <form action="/urls/<%= item %>/delete" method="POST">
-      <span for="shortURL" style="background-color: red">Delete?</span>
+       <div class="button"> <form action="/urls/<%= item %>/delete" method="POST">
+      <span for="shortURL" style="">Delete?</span>
       <input type="submit" value="press button">
-    </form>
+    </form></div><br>
+        <a href = "/urls/<%=item%>/">"Edit?"</a>
   </ul>
 <% } %>
 </h1>

@@ -3,30 +3,17 @@
 <head>
   <title>TinyApp</title>
   <% include partials/_header %>
-    <style>
-  p {
-    text-align: center;
-    color: blue;
-    background-color: navajoWhite;
-  }
-  body {
-    background-color:  navajoWhite;
-  }
-  </style>
 </head>
 <body>
     <!-- Add your EJS code here -->
 <h1>
     <p>Thank you, you have logged:</p>
-    <p><%= shortURL %></p>
+    <p class="title"><%= shortURL %></p>
 </h1>
-      <form action="/urls/<%=shortURL%>" method="POST">
-
+      <div class="button"><form action="/urls/<%=shortURL%>" method="POST">
       <label for="text">texthere</label>
       <input id="longURL" type="text" name="longURL" placeholder="update url" style="width: 300px">
       <input type="submit" value="Submit">
-      </form>
-
-    <a href=#></a>
+      </form></div>
 </body>
 </html>
