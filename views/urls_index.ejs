@@ -6,19 +6,16 @@
 </head>
 <body>
 
-<h1 class="url">
   <% for (item in urls) { %>
   <ul>
-    <p><li><%= item %> : <%= urls[item] %></li></p>
+    <h1><li><%= item %> : <%= urls[item] %></li></h1>
        <div class="button"> <form action="/urls/<%= item %>/delete" method="POST">
       <span for="shortURL" style="">Delete?</span>
       <input type="submit" value="press button">
-    </form></div><br>
-        <a href = "/urls/<%=item%>/">"Edit?"</a>
+    </form></div><br></h1>
+        <a class="del" href = "/urls/<%=item%>/">"Edit?"</a><h1>
   </ul>
 <% } %>
-</h1>
-
 
 </body>
 </html>
