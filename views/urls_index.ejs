@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
-<% include partials/_header %>
+  <% include partials/_header %>
 </head>
 <body>
-<h1>hello</h1>
+  <h1>hello</h1>
+
   <% for (item in urls) { %>
   <ul>
     <h1><li><%= item %> : <%= urls[item] %></li></h1>
@@ -16,6 +17,5 @@
         <a class="del" href = "/urls/<%=item%>/">"Edit?"</a><h1>
   </ul>
 <% } %>
-
 </body>
 </html>
