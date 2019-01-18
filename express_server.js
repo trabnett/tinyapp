@@ -58,90 +58,89 @@ var urlDatabase = {
   "9r3204": "http://www.espn.com"
 };
 
-// app.get("/urls/login", (req,res) => {
-//   res.render("login")
-// })
-// app.post("/urls/register", (req,res) => {
-//   var check
-//   if (req.body.email && req.body.password){
-//     for (items in users) {
-//       var a = users[items].email
-//       var b = req.body.email
-//       if (a === b) {
-//         check = true
-//       }
-//     }
-//     if (check === true) {
-//         res.cookie("id",item)
-//         return res.redirect("/urls")
-//     } else {
-//           let tag = generateRandomString()
-//           req.body.id = tag
-//           users[tag] = req.body
-//           console.log(users)
-//           res.cookie("id",tag)
-//           return res.redirect('/urls')
-//               }
-//     } else {
-//       res.render("error404")
-//   }
-// });
+app.get("/urls/login", (req,res) => {
+  res.render("login")
+})
+app.post("/urls/register", (req,res) => {
+  var check
+  var user_id
+  if (req.body.email && req.body.password){
+    for (key in users) {
+      if (users[key].email === req.body.email) {
+        check = true
+        user_id = key
+        break
+      }
+    }
+    if (check === true) {
+        res.cookie("id", id)
+        return res.redirect("/urls")
+    } else {
+          let tag = generateRandomString()
+          users[tag] = req.body
+          users[tag]['id'] = tag
+          res.cookie("id",tag)
+          return res.redirect('/urls')
+              }
+    } else {
+      res.render("error404")
+  }
+});
 
 
 
-// app.get("/urls/register", (req,res) => {
-//   res.render("register", res.body);
-// });
-// app.post("/logout", (req,res) => {
-//   res.clearCookie("id",req.body[id])
-//   res.redirect('/urls')
-// });
+app.get("/urls/register", (req,res) => {
+  res.render("register", res.body);
+});
+app.post("/logout", (req,res) => {
+  res.clearCookie("id",req.body[id])
+  res.redirect('/urls')
+});
 app.post("/login", (req,res) => {
   res.cookie("id",req.body[id])
   res.redirect('/urls')
 });
-// app.post("/urls/:id", (req,res) =>{
-// urlDatabase[req.params.id] = req.body.longURL
-// res.redirect("/urls/")
+app.post("/urls/:id", (req,res) =>{
+urlDatabase[req.params.id] = req.body.longURL
+res.redirect("/urls/")
 
-// });
-// app.post("/urls/:id/delete", (req,res) =>{
-//   delete urlDatabase[req.params.id]
-//   console.log(req.params.id)
-//   res.redirect('/urls')
-// });
-// app.get("/urls/new", (req, res) => {
-//   res.render("urls_new", {username: req.cookies["id"]});
-// });
-// app.post("/urls", (req, res) => {
-//   var num = addToDatabase(req.body.longURL)
-//   res.redirect('/urls/' + num);
-// });
-// app.get("/u/:id", (req, res) => {
-//   let url = urlDatabase[req.params.id]
-//   if (url.substring(0,7) === 'http://'){
-//     res.redirect(url)
-//   } else {
-//     res.redirect('http://' + url)
-//   }
-// });
-// app.get("/urls/:id", (req, res) => {
-//   let templateVars = { shortURL: [req.params.id],username: req.cookies["id"]};
-//   res.render("urls_show", templateVars, );
-// });
+});
+app.post("/urls/:id/delete", (req,res) =>{
+  delete urlDatabase[req.params.id]
+  console.log(req.params.id)
+  res.redirect('/urls')
+});
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new", {username: req.cookies["id"]});
+});
+app.post("/urls", (req, res) => {
+  var num = addToDatabase(req.body.longURL)
+  res.redirect('/urls/' + num);
+});
+app.get("/u/:id", (req, res) => {
+  let url = urlDatabase[req.params.id]
+  if (url.substring(0,7) === 'http://'){
+    res.redirect(url)
+  } else {
+    res.redirect('http://' + url)
+  }
+});
+app.get("/urls/:id", (req, res) => {
+  let templateVars = { shortURL: [req.params.id],username: req.cookies["id"]};
+  res.render("urls_show", templateVars, );
+});
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase};
+  let templateVars = { urls: urlDatabase,
+                       username: req.cookies["id"]};
   res.render("urls_index", templateVars);
 });
-// app.get("/hello", (req, res) => {
-//   res.send("<html><body>Hello <b>World</b></body></html>\n");
-// });
-// app.get("/", (req, res) => {
-//   res.send("hello");
-// });
-// app.get("/tim", (req,res) => {
-//   res.send("<html><body>Tim built this!</body></html>\n")
-// });
+app.get("/hello", (req, res) => {
+  res.send("<html><body>Hello <b>World</b></body></html>\n");
+});
+app.get("/", (req, res) => {
+  res.send("hello");
+});
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

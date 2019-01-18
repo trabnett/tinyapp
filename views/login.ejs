@@ -2,16 +2,16 @@
 <html lang="en">
   <head>
     <title>TinyApp</title>
-    <% include partials/_header %>
+<% include partials/_header %>
   </head>
   <body>
-<h1>Hello!</h1>
+
 
 
     <div class="button-alt"> <div id="welcome">
-      <form action="/login" method="POST">
+      <form action="/urls/register" method="POST">
       <label for="login">Please Log In:</label>
-      <input id="username" type="text" name="username" placeholder="username">
+      <input id="email" type="text" name="email" placeholder="email">
       <input id="password" type="text" name="password" placeholder="password">
       <input type="submit" value="Submit">
       </form></div>

@@ -4,6 +4,7 @@
   <style>
 
   </style>
+
 </head>
 <body>
   <div class="navbar">
@@ -13,16 +14,17 @@
   <a href="/urls/logout">Logout</a>
   <a href="/urls/login">Login</a>
 </div>
-      <% if id { %>
-   <div class="username"><h1>Welcome: <%= id %></h1></div>
-     <div class="button-alt"> <form action="/logout" method="POST">
-      <input type="submit" value="Logout">
+
+    <% if (typeof(username) !== "undefined") { return %>
+   <div class="username"><h1>Welcome! <%=username%></h1></div>
+
+
     </form>
       </form></div>
- <% } else{ %>
-      <h1>Hello!</h1>
-<% } %>
-
+      <%} else { %>
+      <div class="button-alt"> <form action="/login" method="POST">
+      <input type="submit" value="Login">
+   <% } %>
 
 </body>
 </html>
