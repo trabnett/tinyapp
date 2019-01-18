@@ -33,12 +33,11 @@ delete object.item
 
 function emailChecker(input, dataBase){
   for (var user in dataBase) {
-    if (user["email"] = input) {
-      return dataBase[user]
-    } else {
-      return undefined
+    if (dataBase[user]["email"] === input) {
+      return dataBase[user];
     }
   }
+  return null;
 }
 
 const users = {
@@ -50,7 +49,7 @@ const users = {
  "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    password: "asdf"
   }
 }
 
@@ -59,6 +58,8 @@ var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+
 
 
 
@@ -101,13 +102,19 @@ app.get("/register", (req,res) => {
   res.render("register", res.body);
 });
 app.post("/logout", (req,res) => {
-res.clearCookie("username",req.body.username)
-res.redirect('/urls')
+  res.clearCookie("id",req.body["id"])
+  res.redirect('/urls')
 });
 app.post("/login", (req,res) => {
-  console.log(req.body)
-  res.cookie("id",req.body["id"])
-  res.redirect('/urls')
+  console.log("this is the req body", req.body)
+  for (user in users) {
+    if (users[user]["email"] === req.body["email"] && users[user]["password"] === req.body["password"]) {
+     console.log("success")
+     res.cookie("id", users[user])
+     res.redirect('/')
+    }
+  }
+  res.render('error404')
 });
 app.post("/urls/:id", (req,res) =>{
 urlDatabase[req.params.id] = req.body.longURL
@@ -119,10 +126,11 @@ app.post("/urls/:id/delete", (req,res) =>{
   res.redirect('/urls')
 });
 app.get("/urls/new", (req, res) => {
-  console.log("this is the login cookies:", req.cookies)
-  res.render("urls_new", {"id": req.cookies["id"]});
+  templateVars = {"id": req.cookies["id"], longURL: "blank"}
+  res.render("urls_new", templateVars);
 });
 app.post("/urls", (req, res) => {
+  console.log("this body is after posting a new url:", req.body)
   var num = addToDatabase(req.body.longURL)
   res.redirect('/urls/' + num);
 });
@@ -135,7 +143,8 @@ app.get("/u/:id", (req, res) => {
   }
 });
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: [req.params.id], "id": req.cookies["id"]};
+  console.log("this is req.params get urls :id", req.params, urlDatabase[req.params.id] )
+  let templateVars = { shortURL: [req.params.id], longURL: urlDatabase[req.params.id], "id": req.cookies["id"]};
   res.render("urls_show", templateVars, );
 });
 app.get("/urls", (req, res) => {

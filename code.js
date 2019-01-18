@@ -1,30 +1,30 @@
 function emailChecker(input, dataBase){
-  var a
   for (var user in dataBase) {
-    console.log("this is user.email", dataBase[user]["email"])
-    console.log("this is input", input)
     if (dataBase[user]["email"] === input) {
-      return dataBase[user]
-
-    } else {
-      return undefined
+      return dataBase[user];
     }
   }
+  return null;
 }
 
 
+
+
+
+
+
 var data = {
-  "id": {
+  "idf": {
     id: "asdfasdf",
     email: "iasdf@lksdfg.com",
     name: "tim"
     },
-  "id": {
+  "ids": {
     id: "affsdfafdfsdf",
     email: "i00f@lksdfg.com",
     name: "bill"
     },
-  "id": {
+  "ido": {
     id: "898sdfasdf",
     email: "0df@lksdfg.com",
      name: "jeff"
@@ -32,3 +32,5 @@ var data = {
 }
 
 console.log(emailChecker("iasdf@lksdfg.com", data))
+
+

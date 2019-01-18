@@ -7,7 +7,7 @@
 <body>
 <h1>
     <p>Thank you, you have logged:</p>
-    <p class="title"><%= shortURL %></p>
+    <p class="title"><%= shortURL %><%= longURL %></p>
 </h1>
       <div class="button"><form action="/urls/<%=shortURL%>" method="POST">
       <input id="longURL" type="text" name="longURL" placeholder="update url">
