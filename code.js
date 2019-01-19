@@ -1,11 +1,9 @@
-let a = {a: "asdfasdf"}
+var a = {}
+var d  = 5
+var b = {a: "ehle"}
+var k = {b: "seve"}
 
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
 
-console.log(isEmpty(a))
+a.x = k
+a.y = b
+console.log(a)

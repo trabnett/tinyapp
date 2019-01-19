@@ -2,8 +2,9 @@ var cookieParser = require('cookie-parser')
 var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
-app.set("view engine", "ejs");
 const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
+app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
@@ -20,6 +21,8 @@ function isEmpty(obj) {
   return true;
 }
 
+
+
 function generateRandomString() {
   var inputs = ["a","b","c","d","e","f","g","h","i","j","k","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0",""]
   result = ''
@@ -29,11 +32,7 @@ function generateRandomString() {
   return result
 }
 
-// function addToDatabase(longUrl,cookies) {
-//   var i = generateRandomString()
-//   urlDatabasecookies["id"][i] = longUrl
-//   return i
-// }
+
 
 function removeItem(object, item) {
 delete object.item
@@ -63,8 +62,10 @@ const users = {
 
 
 var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {"longURL": "http://www.lighthouselabs.ca",
+              "id": "original item"},
+  "9sm5xK": {"longURL": "http://www.google.com",
+            "id": "original item"}
 };
 
 
@@ -87,10 +88,10 @@ app.post("/register", (req,res) => {
         res.cookie("id", users[user_id])
         return res.redirect("/urls")
     } else {
-          let tag = generateRandomString()
-          users[tag] = req.body
-          users[tag]['id'] = tag
-          res.cookie("id",users[tag])
+          const password = req.body['password']; // you will probably this from req.params
+          const hashedPassword = bcrypt.hashSync(password, 10)
+          let userId = generateRandomString()
+          users[userId] = {"id": userId, 'email':req.body['email'], 'password': hashedPassword}
           return res.redirect('/urls')
               }
     } else {
@@ -110,7 +111,7 @@ app.post("/logout", (req,res) => {
 });
 app.post("/login", (req,res) => {
   for (user in users) {
-    if (users[user]["email"] === req.body["email"] && users[user]["password"] === req.body["password"]) {
+    if (users[user]["email"] === req.body["email"] && bcrypt.compareSync(req.body["password"], users[user]["password"])) {
      res.cookie("id", users[user])
      res.redirect('/')
     }
@@ -135,17 +136,16 @@ app.get("/urls/new", (req, res) => {
 }
 });
 app.post("/urls", (req, res) => {
-  console.log("cookies when posting", req.cookies["id"]["id"])
+  console.log(users)
   var i = generateRandomString()
   var j = req.cookies["id"]["id"]
-  console.log(i, j)
   var j = req.cookies["id"]["id"]
   urlDatabase[i] = {longURL: req.body.longURL, id: j}
-  console.log("user database at /urls", urlDatabase)
   res.redirect('/urls/' + i);
 });
 app.get("/u/:id", (req, res) => {
-  let url = urlDatabase[req.params.id]
+  let url = urlDatabase[req.params.id]['longURL']
+  console.log(url)
   if (url.substring(0,7) === 'http://'){
     res.redirect(url)
   } else {
@@ -153,13 +153,17 @@ app.get("/u/:id", (req, res) => {
   }
 });
 app.get("/urls/:id", (req, res) => {
-  console.log("urlDatabase", urlDatabase)
   let templateVars = { shortURL: [req.params.id], longURL: urlDatabase[req.params.id]["longURL"], "id": req.cookies["id"]};
   res.render("urls_show", templateVars, );
 });
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, "id": req.cookies["id"]};
-  res.render("urls_index", templateVars);
+  console.log("req.cookies", req.cookies.id, req.body)
+  let templateVars = { urls: urlDatabase, "id": req.cookies["id"]}
+  if (!req.cookies["id"]) {
+    return res.render("login", templateVars);
+  } else {
+    res.render("urls_index", templateVars);
+  }
 });
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
