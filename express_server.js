@@ -12,6 +12,14 @@ function getById (id) {
   return urlDatabase[id]
 }
 
+function isEmpty(obj) {
+  for(var key in obj) {
+    if(obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
+}
+
 function generateRandomString() {
   var inputs = ["a","b","c","d","e","f","g","h","i","j","k","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0",""]
   result = ''
@@ -21,11 +29,11 @@ function generateRandomString() {
   return result
 }
 
-function addToDatabase(longUrl) {
-  var i = generateRandomString()
-  urlDatabase[i] = longUrl
-  return i
-}
+// function addToDatabase(longUrl,cookies) {
+//   var i = generateRandomString()
+//   urlDatabasecookies["id"][i] = longUrl
+//   return i
+// }
 
 function removeItem(object, item) {
 delete object.item
@@ -61,13 +69,10 @@ var urlDatabase = {
 
 
 
-
-
 app.get("/login", (req,res) => {
   res.render("login",res.body)
 })
 app.post("/register", (req,res) => {
-  console.log(req.body)
   var check
   var user_id
   if (req.body.email && req.body.password){
@@ -80,13 +85,11 @@ app.post("/register", (req,res) => {
     }
     if (check === true) {
         res.cookie("id", users[user_id])
-        console.log("new cookie value:", users[user_id])
         return res.redirect("/urls")
     } else {
           let tag = generateRandomString()
           users[tag] = req.body
           users[tag]['id'] = tag
-          console.log("this is the new cookie value", users[tag])
           res.cookie("id",users[tag])
           return res.redirect('/urls')
               }
@@ -106,10 +109,8 @@ app.post("/logout", (req,res) => {
   res.redirect('/urls')
 });
 app.post("/login", (req,res) => {
-  console.log("this is the req body", req.body)
   for (user in users) {
     if (users[user]["email"] === req.body["email"] && users[user]["password"] === req.body["password"]) {
-     console.log("success")
      res.cookie("id", users[user])
      res.redirect('/')
     }
@@ -117,7 +118,7 @@ app.post("/login", (req,res) => {
   res.render('error404')
 });
 app.post("/urls/:id", (req,res) =>{
-urlDatabase[req.params.id] = req.body.longURL
+  urlDatabase[req.params.id] = req.body.longURL
 res.redirect("/urls/")
 
 });
@@ -126,13 +127,22 @@ app.post("/urls/:id/delete", (req,res) =>{
   res.redirect('/urls')
 });
 app.get("/urls/new", (req, res) => {
-  templateVars = {"id": req.cookies["id"], longURL: "blank"}
-  res.render("urls_new", templateVars);
+  if (isEmpty(req.cookies) === false) {
+   templateVars = {"id": req.cookies["id"], longURL: "blank"}
+   return res.render("urls_new", templateVars);
+  } else {
+  res.redirect("/register")
+}
 });
 app.post("/urls", (req, res) => {
-  console.log("this body is after posting a new url:", req.body)
-  var num = addToDatabase(req.body.longURL)
-  res.redirect('/urls/' + num);
+  console.log("cookies when posting", req.cookies["id"]["id"])
+  var i = generateRandomString()
+  var j = req.cookies["id"]["id"]
+  console.log(i, j)
+  var j = req.cookies["id"]["id"]
+  urlDatabase[i] = {longURL: req.body.longURL, id: j}
+  console.log("user database at /urls", urlDatabase)
+  res.redirect('/urls/' + i);
 });
 app.get("/u/:id", (req, res) => {
   let url = urlDatabase[req.params.id]
@@ -143,12 +153,11 @@ app.get("/u/:id", (req, res) => {
   }
 });
 app.get("/urls/:id", (req, res) => {
-  console.log("this is req.params get urls :id", req.params, urlDatabase[req.params.id] )
-  let templateVars = { shortURL: [req.params.id], longURL: urlDatabase[req.params.id], "id": req.cookies["id"]};
+  console.log("urlDatabase", urlDatabase)
+  let templateVars = { shortURL: [req.params.id], longURL: urlDatabase[req.params.id]["longURL"], "id": req.cookies["id"]};
   res.render("urls_show", templateVars, );
 });
 app.get("/urls", (req, res) => {
-  console.log(req.cookies)
   let templateVars = { urls: urlDatabase, "id": req.cookies["id"]};
   res.render("urls_index", templateVars);
 });
@@ -156,7 +165,6 @@ app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 app.get("/tim", (req,res) => {
-  console.log("tim")
   res.send("<html><body>Tim built this!</body></html>\n")
 });
 
