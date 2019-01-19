@@ -2,8 +2,6 @@
 <!Doctype HTML>
 <html lang="en">
 <head>
-  <style>
-  </style>
 </head>
 <body>
   <div class="navbar">
@@ -12,12 +10,12 @@
   <a href="/login">Login</a>
   <a href="/register">Register</a>
 </div>
-      <% if(id){ %>
-   <div class="username"><h1>Welcome: <%= id["id"] %></h1></div>
-     <div class="button-alt"> <form action="/logout" method="POST">
-      <input type="submit" value="Logout">
+      <% if (user) { %>
     </form>
-      </form></div>
+    <div class="username"><h1>Welcome: <%= user["id"] %></h1></div>
+    <div class="button-alt"> <form action="/logout" method="POST">
+    <input type="submit" value="Logout">
+    </form></div>
  <% } else{ %>
     <a>Please Log In<a>
 <% } %>

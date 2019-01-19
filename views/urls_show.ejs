@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
-      <% include partials/_header %>
-</head>
+<% include ./partials/_header %>
+  </head>
 <body>
 <h1>
     <p>Thank you, you have logged:</p>
-    <p class="title"><%= shortURL %><%= longURL %></p>
-</h1>
+    <p class="title">:<%= longURL %></p></h1>
+      <p><%= shortURL %></p>
       <div class="button"><form action="/urls/<%=shortURL%>" method="POST">
       <input id="longURL" type="text" name="longURL" placeholder="update url">
       <input type="submit" value="Submit">
