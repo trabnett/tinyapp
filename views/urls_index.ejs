@@ -10,7 +10,7 @@
   <% for (item in urls) { %>
 
   <ul>
-            <% if (user["id"] === urls[item]["id"]) {%>
+
    <h1> <li><%= item %> : <%= urls[item]["longURL"] %> </li></h1>
 
     <div class="button"> <form action="/urls/<%= item %>/delete" method="POST">
@@ -19,7 +19,7 @@
     </form></div><br>
     <a class="del" href = "/urls/<%=item%>/">"Edit?"</a>
   </ul>
-   <% } %>
+
 <% } %>
 
 </body>
