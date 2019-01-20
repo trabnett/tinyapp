@@ -9,10 +9,11 @@
     <p style="text-align: center">Thank you, you have logged:</p>
     <p class="title" style="text-align: center"><%= longURL %></p></h1>
       <h2><p style="text-align: center"><%= shortURL %></p></h2>
-      <div class="button"><form action="/urls/<%=shortURL%>" method="POST">
-      <input id="longURL" type="text" name="longURL" placeholder="update url">
+      <form action="/update" method="POST">
+      <input id="longURL" type="text" name="longUrl" placeholder="update url">
+      <input id="<% shortURL%>" name="<% shortURL %>" placeholder="<%=shortURL%>">
       <input type="submit" value="Submit">
-      </form></div>
+      </form>
 
 
 </body>

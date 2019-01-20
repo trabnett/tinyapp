@@ -148,6 +148,11 @@ app.get("/u/:id", (req, res) => {
     res.redirect('http://' + url)
   }
 });
+app.post("/update", (req, res) => {
+  console.log(req.params.body, "<-body:sess id->", req.session.user_id)
+req.session.user_id
+res.send("hello")
+});
 app.get("/urls/:id", (req, res) => {
   console.log("this is the req params", urlDatabase[req.params.id]["id"])
   console.log("this is sess id", req.session.user_id)
@@ -157,7 +162,7 @@ app.get("/urls/:id", (req, res) => {
     let templateVars = { shortURL: [req.params.id], longURL: urlDatabase[req.params.id]["longURL"], user: users[req.session.user_id]};
     return res.render("urls_show", templateVars, );
   } else {
-    res.send("this is not your URL")
+    res.render("not_your_url")
   }
 });
 app.get("/urls", (req, res) => {
