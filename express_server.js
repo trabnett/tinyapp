@@ -69,6 +69,7 @@ var urlDatabase = {
 
 
 app.get("/login", (req,res) => {
+  req.session.user_id
   res.render("login",res.body)
 })
 app.post("/register", (req,res) => {
@@ -111,14 +112,14 @@ app.post("/login", (req,res) => {
   for (user in users) {
     if (users[user]["email"] === req.body["email"] && bcrypt.compareSync(req.body["password"], users[user]["password"])) {
      req.session.user_id
-     res.redirect('/')
+     res.redirect('/urls')
     }
   }
   res.redirect('/register')
 });
 app.post("/urls/:id", (req,res) =>{
   urlDatabase[req.params.id] = req.body.longURL
-res.redirect("/urls/")
+res.redirect("/urls")
 
 });
 app.post("/urls/:id/delete", (req,res) =>{
@@ -127,7 +128,7 @@ app.post("/urls/:id/delete", (req,res) =>{
 });
 app.get("/urls/new", (req, res) => {
   if (req.session.user_id in users) {
-   templateVars = {"id": req.session.user_id, longURL: "blank"}
+   templateVars = {user: users[req.session.user_id], longURL: "blank"}
    return res.render("urls_new", templateVars);
   } else {
   res.redirect("/register")
@@ -136,9 +137,7 @@ app.get("/urls/new", (req, res) => {
 app.post("/urls", (req, res) => {
   console.log(users)
   var i = generateRandomString()
-  var j = req.session.user_id
-  var j = req.session.user_id
-  urlDatabase[i] = {longURL: req.body.longURL, id: j}
+  urlDatabase[i] = {longURL: req.body.longURL, id: req.session.user_id}
   res.redirect('/urls/' + i);
 });
 app.get("/u/:id", (req, res) => {
@@ -150,10 +149,19 @@ app.get("/u/:id", (req, res) => {
   }
 });
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: [req.params.id], longURL: urlDatabase[req.params.id]["longURL"], "id": req.session.user_id};
-  res.render("urls_show", templateVars, );
+  console.log("this is the req params", urlDatabase[req.params.id]["id"])
+  console.log("this is sess id", req.session.user_id)
+  console.log(urlDatabase)
+  req.session.user_id
+  if (req.session.user_id === urlDatabase[req.params.id]["id"]) {
+    let templateVars = { shortURL: [req.params.id], longURL: urlDatabase[req.params.id]["longURL"], user: users[req.session.user_id]};
+    return res.render("urls_show", templateVars, );
+  } else {
+    res.send("this is not your URL")
+  }
 });
 app.get("/urls", (req, res) => {
+  console.log(req.body, "this is from urls", req.session.user_id, "session Id")
   let userId = req.session.user_id
   if (!userId) {
     return res.render("login");

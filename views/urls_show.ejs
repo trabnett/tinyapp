@@ -6,9 +6,9 @@
   </head>
 <body>
 <h1>
-    <p>Thank you, you have logged:</p>
-    <p class="title">:<%= longURL %></p></h1>
-      <p><%= shortURL %></p>
+    <p style="text-align: center">Thank you, you have logged:</p>
+    <p class="title" style="text-align: center"><%= longURL %></p></h1>
+      <h2><p style="text-align: center"><%= shortURL %></p></h2>
       <div class="button"><form action="/urls/<%=shortURL%>" method="POST">
       <input id="longURL" type="text" name="longURL" placeholder="update url">
       <input type="submit" value="Submit">
