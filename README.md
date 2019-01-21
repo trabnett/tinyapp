@@ -5,8 +5,10 @@ TinyApp is project that Lighthouse Labs uses to teach it's students the concept 
 
 ## Final Product
 
-!["screenshot description"] (#)
-!["screenshot description"] (#)
+!["screenshot description"] (https://github.com/trabnett/tinyapp/blob/master/docs/login%20page_tinyapp_timrabnett.png)
+!["screenshot description"] (https://github.com/trabnett/tinyapp/blob/master/docs/new_url%20page_tinyapp_timrabnett.png)
+!["screenshot description"] (https://github.com/trabnett/tinyapp/blob/master/docs/urls%20page_tinyapp_timrabnett.png)
+
 
 
 ## Dependencies
