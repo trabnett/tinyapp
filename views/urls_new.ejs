@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>TinyApp</title>
-<% include ./partials/_header %>
+      <% include ./partials/_header %>
     </head>
   <body>
 
@@ -10,10 +10,10 @@
 
 
       <div class="button"><form action="/urls" method="POST">
-      <label for="longURL">Enter a URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://">
-      <input type="submit" value="Submit">
-      <%longURL = longURL.shortURL%>
+        <label for="longURL">Enter a URL:</label>
+        <input id="longURL" type="text" name="longURL" placeholder="http://">
+        <input type="submit" value="Submit">
+        <%longURL = longURL.shortURL%>
       </form></div>
   </body>
 </html>

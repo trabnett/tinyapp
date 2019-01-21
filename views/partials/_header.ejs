@@ -3,23 +3,21 @@
 <html lang="en">
 <head>
 </head>
-<body>
-  <div class="navbar">
-  <a href="/urls">Home</a>
-  <a href="/urls/new">New</a>
-  <a href="/login">Login</a>
-  <a href="/register">Register</a>
-</div>
+  <body>
+    <div class="navbar">
+      <a href="/urls">Home</a>
+      <a href="/urls/new">New</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    </div>
       <% if (user) { %>
-    </form>
-    <div class="username"><h1>Welcome: <%= user["email"] %></h1></div>
-    <div class="button-alt"> <form action="/logout" method="POST">
-    <input type="submit" value="Logout">
-    </form></div>
- <% } else{ %>
-    <a>Please Log In<a>
-<% } %>
-
-
-</body>
+        </form>
+        <div class="username"><h1>Welcome: <%= user["email"] %></h1></div>
+        <div class="button-alt"> <form action="/logout" method="POST">
+        <input type="submit" value="Logout">
+        </form></div>
+      <% } else{ %>
+        <a>Please Log In<a>
+      <% } %>
+  </body>
 </html>
