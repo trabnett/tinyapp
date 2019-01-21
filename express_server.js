@@ -12,7 +12,7 @@ app.use(cookieSession({
 }))
 
 function passwordChecker(email, password, data) {
-  for (var user in data) {
+  for (let user in data) {
     if (data[user]['email'] === email && bcrypt.compareSync(password, data[user]['password'])) {
       return user;
     }
@@ -30,7 +30,7 @@ return a;
 }
 
 function generateRandomString() {
-  var inputs = ["a","b","c","d","e","f","g","h","i","j","k","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0",""]
+  const inputs = ["a","b","c","d","e","f","g","h","i","j","k","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0",""]
   result = '';
   for (i = 0; i <6; i++) {
     result += inputs[Math.floor((Math.random() * inputs.length))];
@@ -39,7 +39,7 @@ function generateRandomString() {
 }
 
 function emailChecker(input, dataBase){
-  for (var user in dataBase) {
+  for (let user in dataBase) {
     if (dataBase[user]['email'] === input) {
       return dataBase[user];
     }
@@ -113,7 +113,7 @@ app.post('/logout', (req,res) => {
   res.redirect('/urls')
 });
 
-app.post("/login", (req,res) => {
+app.post('/login', (req,res) => {
   let password = req.body['password'];
   let email = req.body['email']
   req.session.user_id = passwordChecker(email, password, users)
@@ -136,7 +136,7 @@ app.post('/urls/:id', (req,res) =>{
 res.redirect('/login')
 });
 
-app.post("/urls/:id/delete", (req,res) =>{
+app.post('/urls/:id/delete', (req,res) =>{
   delete urlDatabase[req.params.id]
   res.redirect('/urls')
 });
@@ -144,14 +144,14 @@ app.post("/urls/:id/delete", (req,res) =>{
 app.get('/urls/new', (req, res) => {
   if (req.session.user_id in users) {
    templateVars = {user: users[req.session.user_id], longURL: 'blank'}
-   return res.render("urls_new", templateVars);
+   return res.render('urls_new', templateVars);
   } else {
   res.redirect('/register')
 }
 });
 
 app.post('/urls', (req, res) => {
-  var i = generateRandomString()
+  let i = generateRandomString()
   urlDatabase[i] = {longURL: req.body.longURL, id: req.session.user_id};
   res.redirect('/urls/' + i);
 });
@@ -180,23 +180,23 @@ app.get('/urls/:id', (req, res) => {
   }
 });
 
-app.get("/urls", (req, res) => {
+app.get('/urls', (req, res) => {
   if (!req.session.user_id) {
     return res.render('login');
   } else {
-    var info = urlsForId(req.session.user_id, urlDatabase);
+    let info = urlsForId(req.session.user_id, urlDatabase);
     req.session.user_id;
     let templateVars = { urls: info, user: users[req.session.user_id]};
-    res.render("urls_index", templateVars);
+    res.render('urls_index', templateVars);
   }
 });
 
 app.get('/hello', (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
+  res.send('<html><body>Hello <b>World</b></body></html>\n');
 });
 
 app.get('/tim', (req,res) => {
-  res.send("<html><body>Tim built this!</body></html>\n");
+  res.send('<html><body>Tim built this!</body></html>\n');
 });
 
 app.listen(PORT, () => {
